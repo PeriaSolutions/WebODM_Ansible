@@ -5,7 +5,7 @@
   gather_facts: yes
   vars_prompt:
     - name: backendIP
-      prompt: Enter backend IP address
+      prompt: Enter backend IP address (127.0.0.1)
       private: no
    # - name: port
    #   prompt: Enter application port
