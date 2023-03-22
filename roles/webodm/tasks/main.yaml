@@ -1,0 +1,34 @@
+- name: Create WebODM directory
+  ansible.builtin.file:
+    path: /opt/webodm
+    state: directory
+    mode: "0755"
+- name: Clone WebODM repository
+  ansible.builtin.git:
+    repo: https://github.com/OpenDroneMap/WebODM.git
+    dest: /opt/webodm
+- name: Deploy WebODM using Docker Compose
+  ansible.builtin.docker_compose:
+    project_src: /opt/webodm
+    state: present
+    pull: yes
+    build: yes
+    remove_orphans: yes
+    restarted: yes
+- name: Create NodeODM directory
+  ansible.builtin.file:
+    path: /opt/nodeodm
+    state: directory
+
+#- name: Download docker-compose.nodeodm.yml from WebODM repository
+#  ansible.builtin.get_url:
+#    url: https://raw.githubusercontent.com/OpenDroneMap/WebODM/master/docker-compose.nodeodm.yml
+#    dest: /opt/nodeodm/docker-compose.yml
+#    mode: '0644'
+
+#- name: Start NodeODM using Docker Compose
+#  ansible.builtin.docker_compose:
+#    project_src: /opt/nodeodm
+#    state: present
+#    restarted: yes
+#    remove_orphans: yes

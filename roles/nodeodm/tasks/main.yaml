@@ -1,0 +1,11 @@
+---
+
+    - name: Nodeodm deployment
+      ansible.builtin.docker_compose:
+        project_src: /webodm/webodmdeployment/roles/nodeodm/files
+        pull: yes
+        build: yes
+        remove_orphans: yes
+        restarted: yes
+        state: present
+      when: install_nodeodm == 'yes'

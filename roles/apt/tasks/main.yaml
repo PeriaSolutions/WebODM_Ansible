@@ -1,0 +1,16 @@
+---
+- name: Install required packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - git
+      - nginx
+      - certbot
+      - python3-certbot-nginx
+    state: present
+   # update_cache: yes
+

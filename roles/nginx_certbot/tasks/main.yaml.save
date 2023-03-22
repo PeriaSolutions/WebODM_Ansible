@@ -1,0 +1,61 @@
+
+
+
+
+
+
+
+---
+
+    - name: Install required packages
+      apt:
+        name:
+          - nginx
+          - software-properties-common
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Certbot repository
+      apt_repository:
+        repo: ppa:certbot/certbot
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Certbot and Nginx plugin
+      apt:
+        name:
+          - certbot
+          - python3-certbot-nginx
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Remove default Nginx configuration
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Add Nginx reverse proxy configuration
+      template:
+        src: nginx_reverse_proxy.j2
+        dest: /etc/nginx/sites-available/reverse_proxy.conf
+
+    - name: Enable reverse proxy configuration
+      file:
+        src: /etc/nginx/sites-available/reverse_proxy.conf
+        dest: /etc/nginx/sites-enabled/reverse_proxy.conf
+        state: link
+
+    - name: Reload Nginx configuration
+      systemd:
+        name: nginx
+        state: reloaded
+
+    - name: Obtain and configure SSL certificate using Certbot
+      shell: certbot --nginx --non-interactive --agree-tos --email {{ email }} --domain {{ domain_name }}
+
+    - name: Set up Certbot auto-renewal
+      cron:
+        name: Certbot auto-renewal
+        minute: "30"
+        hour: "2"
+        job: certbot renew --quiet --post-hook 'systemctl reload nginx'

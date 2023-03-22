@@ -1,0 +1,35 @@
+---
+- name: Deploy WebODM using Docker Compose on Ubuntu
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+  vars_prompt:
+    - name: backendIP
+      prompt: Enter backend IP address
+      private: no
+   # - name: port
+   #   prompt: Enter application port
+   #   private: no
+    - name: DNS
+      prompt: Enter DNS
+      private: no
+    - name: email
+      prompt: Enter your email for certbot
+      private: no
+    - name: deploy_nodeodm
+      prompt: do you want deploy nodeodm
+      private: no
+
+
+  roles:
+    - apt
+    - docker_setup
+    - webodm
+    - nodeodm
+    - role: nginx_certbot
+      vars:
+        domain_name: "{{ DNS }}"
+      #  email: "{{ email }}"
+        backend_host: "{{ backendIP }}"
+        backend_port: 8000
+        install_nodeodm: "{{ deploy_nodeodm }}"
