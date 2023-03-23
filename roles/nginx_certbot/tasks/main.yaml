@@ -29,7 +29,7 @@
 
     - name: Add Nginx reverse proxy configuration
       template:
-        src: /webodm/webodmdeployment/roles/nginx_certbot/files/nginx_reverse_proxy.j2
+        src: roles/nginx_certbot/files/nginx_reverse_proxy.j2
         dest: /etc/nginx/sites-available/reverse_proxy.conf
 
     - name: Enable reverse proxy configuration

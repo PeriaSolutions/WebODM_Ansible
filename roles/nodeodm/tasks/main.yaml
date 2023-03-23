@@ -1,11 +1,25 @@
 ---
-
     - name: Nodeodm deployment
       ansible.builtin.docker_compose:
-        project_src: /webodm/webodmdeployment/roles/nodeodm/files
+        project_src: roles/nodeodm/files/node
         pull: yes
         build: yes
         remove_orphans: yes
         restarted: yes
         state: present
       when: install_nodeodm == 'yes'
+    - name: NVI deployment
+      when: install_nvi == 'yes'
+      ansible.builtin.docker_compose:
+        project_src: roles/nodeodm/files/nvi
+        pull: yes
+        build: yes
+        remove_orphans: yes
+        restarted: yes
+        state: present
+
+   # - name: Skip NVI deployment
+   #   ansible.builtin.debug:
+   #     msg: "skip task"
+   #   when: install_nvi != 'yes'
+

@@ -17,9 +17,11 @@
       prompt: Enter your email for certbot
       private: no
     - name: deploy_nodeodm
-      prompt: do you want deploy nodeodm
+      prompt: do you want deploy nodeodm?
       private: no
-
+    - name: install_nvi
+      prompt: do you want deploy NVI?
+      private: no
 
   roles:
     - apt

@@ -3,13 +3,13 @@
     path: /opt/webodm
     state: directory
     mode: "0755"
-- name: Clone WebODM repository
-  ansible.builtin.git:
-    repo: https://github.com/OpenDroneMap/WebODM.git
-    dest: /opt/webodm
+#- name: Clone WebODM repository
+#  ansible.builtin.git:
+#    repo: https://github.com/OpenDroneMap/WebODM.git
+#    dest: /opt/webodm
 - name: Deploy WebODM using Docker Compose
   ansible.builtin.docker_compose:
-    project_src: /opt/webodm
+    project_src: roles/webodm/files
     state: present
     pull: yes
     build: yes
